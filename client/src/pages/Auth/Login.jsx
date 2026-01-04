@@ -13,7 +13,7 @@ const Login = () => {
         setError('');
 
         try {
-            const res = await fetch('http://localhost:5000/api/auth/login', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
@@ -131,6 +131,76 @@ const Login = () => {
                             Sign In
                         </button>
                     </form>
+
+                    <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0' }}>
+                        <div style={{ flex: 1, height: '1px', background: 'var(--border-light)' }}></div>
+                        <span style={{ padding: '0 10px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>OR</span>
+                        <div style={{ flex: 1, height: '1px', background: 'var(--border-light)' }}></div>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={async () => {
+                            try {
+                                const { signInWithPopup } = await import('firebase/auth');
+                                const { auth, googleProvider } = await import('../../firebase');
+
+                                const result = await signInWithPopup(auth, googleProvider);
+                                const token = await result.user.getIdToken();
+
+                                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ token }),
+                                });
+
+                                const data = await res.json();
+                                if (res.ok) {
+                                    if (data.needsRegistration) {
+                                        // Redirect to register with pre-filled data
+                                        navigate('/register', {
+                                            state: {
+                                                email: data.email,
+                                                name: data.name,
+                                                picture: data.picture
+                                            }
+                                        });
+                                    } else {
+                                        localStorage.setItem('token', data.token);
+                                        localStorage.setItem('user', JSON.stringify(data));
+                                        if (data.role === 'admin') {
+                                            navigate('/admin');
+                                        } else {
+                                            navigate('/member');
+                                        }
+                                    }
+                                } else {
+                                    setError(data.message);
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                setError('Google Sign-In Failed');
+                            }
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '12px',
+                            background: 'white',
+                            color: '#333',
+                            border: '1px solid #ddd',
+                            borderRadius: '8px',
+                            fontSize: '1rem',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '10px',
+                            fontWeight: '500'
+                        }}
+                    >
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style={{ width: '20px', height: '20px' }} />
+                        Sign in with Google
+                    </button>
 
                     <p style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-muted)' }}>
                         Don't have an account? <Link to="/register" style={{ color: 'var(--color-blue)', textDecoration: 'none', fontWeight: '600' }}>Register here</Link>

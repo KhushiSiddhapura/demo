@@ -41,8 +41,16 @@ app.use('/api/messages', require('./routes/messages')); // Mount the messages ro
 
 
 // Start Server
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
+// Start Server for local development
+if (require.main === module) {
+    connectDB().then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
     });
-});
+} else {
+    // For Cloud Functions, ensure DB connection is initiated
+    connectDB();
+}
+
+module.exports = app;

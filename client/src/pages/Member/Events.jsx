@@ -15,14 +15,14 @@ const MemberEvents = () => {
         const token = localStorage.getItem('token');
         try {
             // Fetch only approved events
-            const res = await fetch('http://localhost:5000/api/events?status=approved', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events?status=approved`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setEvents(await res.json());
 
             // If admin, fetch all users for task assignment
             if (currentUser.role === 'admin') {
-                const usersRes = await fetch('http://localhost:5000/api/admin/users', {
+                const usersRes = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setAllUsers(await usersRes.json());
@@ -44,7 +44,7 @@ const MemberEvents = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -65,7 +65,7 @@ const MemberEvents = () => {
         if (!newTask.title || newTask.assignedTo.length === 0) return alert('Please fill all fields');
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/tasks`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/tasks`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const MemberEvents = () => {
         const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/tasks/${taskId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/tasks/${taskId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

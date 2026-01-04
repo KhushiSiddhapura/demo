@@ -11,7 +11,7 @@ const MyProposals = () => {
         try {
             // Use the dedicated 'my-proposals' endpoint which returns all events (pending, approved, declined)
             // for the current user only. This satisfies the requirement "all their proposals ... of themselves only".
-            const res = await fetch('http://localhost:5000/api/events/my-proposals', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/my-proposals`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -30,7 +30,7 @@ const MyProposals = () => {
     const handleVote = async (eventId) => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/vote`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/vote`, {
                 method: 'PUT',
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -55,7 +55,7 @@ const MyProposals = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

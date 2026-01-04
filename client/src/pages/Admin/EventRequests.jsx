@@ -14,7 +14,7 @@ const EventRequests = () => {
         const token = localStorage.getItem('token');
         try {
             // Remove ?status=pending to get ALL events (Admin sees all by default in backend)
-            const res = await fetch('http://localhost:5000/api/events', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -33,7 +33,7 @@ const EventRequests = () => {
     const handleVote = async (eventId, type) => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/vote`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/vote`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ type })
@@ -49,7 +49,7 @@ const EventRequests = () => {
         if (!text?.trim()) return;
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/discussion`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/discussion`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ text })
@@ -69,7 +69,7 @@ const EventRequests = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const updateRes = await fetch(`http://localhost:5000/api/events/${event._id}`, {
+            const updateRes = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${event._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const EventRequests = () => {
     const handleDecline = async (id) => {
         if (!window.confirm('Are you sure you want to decline this event?')) return;
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5000/api/events/${id}/status`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/events/${id}/status`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({ status: 'declined' })

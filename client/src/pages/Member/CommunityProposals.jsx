@@ -13,7 +13,7 @@ const CommunityProposals = () => {
     const fetchCommunityEvents = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://localhost:5000/api/events?status=pending', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events?status=pending`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -26,7 +26,7 @@ const CommunityProposals = () => {
     const fetchMyEvents = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://localhost:5000/api/events/my-proposals', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/my-proposals`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -44,7 +44,7 @@ const CommunityProposals = () => {
     const handleVote = async (eventId, type) => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/vote`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/vote`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ type })
@@ -60,7 +60,7 @@ const CommunityProposals = () => {
         if (!text?.trim()) return;
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/discussion`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/discussion`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ text })
@@ -78,7 +78,7 @@ const CommunityProposals = () => {
         if (!window.confirm('Are you sure?')) return;
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

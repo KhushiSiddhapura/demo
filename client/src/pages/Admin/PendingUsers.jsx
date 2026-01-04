@@ -8,7 +8,7 @@ const PendingUsers = () => {
     const fetchUsers = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://localhost:5000/api/admin/users/pending', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users/pending`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -27,7 +27,7 @@ const PendingUsers = () => {
     const handleApprove = async (id) => {
         const token = localStorage.getItem('token');
         try {
-            await fetch(`http://localhost:5000/api/admin/users/${id}/approve`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}/approve`, {
                 method: 'PUT',
                 headers: { Authorization: `Bearer ${token}` }
             });

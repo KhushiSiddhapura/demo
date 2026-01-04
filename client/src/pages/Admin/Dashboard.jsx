@@ -15,8 +15,8 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('token');
         try {
             const [eventsRes, usersRes] = await Promise.all([
-                fetch('http://localhost:5000/api/events', { headers: { Authorization: `Bearer ${token}` } }),
-                fetch('http://localhost:5000/api/admin/users', { headers: { Authorization: `Bearer ${token}` } })
+                fetch(`${import.meta.env.VITE_API_URL}/api/events`, { headers: { Authorization: `Bearer ${token}` } }),
+                fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, { headers: { Authorization: `Bearer ${token}` } })
             ]);
 
             const eventsData = await eventsRes.json();
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     const handleTaskCompletion = async (eventId, taskId) => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/tasks/${taskId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/tasks/${taskId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

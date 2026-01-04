@@ -11,8 +11,8 @@ const MemberDashboard = () => {
         const token = localStorage.getItem('token');
         try {
             const [statsRes, eventsRes] = await Promise.all([
-                fetch('http://localhost:5000/api/stats/member-stats', { headers: { Authorization: `Bearer ${token}` } }),
-                fetch('http://localhost:5000/api/events?status=approved', { headers: { Authorization: `Bearer ${token}` } })
+                fetch(`${import.meta.env.VITE_API_URL}/api/stats/member-stats`, { headers: { Authorization: `Bearer ${token}` } }),
+                fetch(`${import.meta.env.VITE_API_URL}/api/events?status=approved`, { headers: { Authorization: `Bearer ${token}` } })
             ]);
 
             const statsData = await statsRes.json();
@@ -48,7 +48,7 @@ const MemberDashboard = () => {
     const handleTaskCompletion = async (eventId, taskId) => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/events/${eventId}/tasks/${taskId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/tasks/${taskId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

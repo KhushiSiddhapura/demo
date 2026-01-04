@@ -12,7 +12,7 @@ const Team = () => {
     const fetchUsers = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://localhost:5000/api/admin/users', { // Reusing this endpoint as it returns all users
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, { // Reusing this endpoint as it returns all users
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -41,7 +41,7 @@ const Team = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/users/${userId}/role`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users/${userId}/role`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,6 @@ const Team = () => {
                         className="glass-card"
                         style={{
                             padding: '1.5rem',
-                            textAlign: 'center',
                             cursor: 'default',
                             position: 'relative',
                             display: 'flex',
