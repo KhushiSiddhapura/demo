@@ -121,14 +121,51 @@ body {
   border-radius: 4px;
 }
 
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Layout */
 .app-container {
   min-height: 100vh;
   display: flex;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll on container */
 }
 
 .main-content {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
+  min-width: 0;
+  /* Critical for preventing flex children from causing overflow */
+}
+
+/* Admin Dashboard Grid */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Team Page Grid */
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

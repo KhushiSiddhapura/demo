@@ -126,7 +126,7 @@ const AdminDashboard = () => {
             <h1 style={{ fontSize: '2rem', marginBottom: '2rem', fontWeight: 'bold' }}>Admin Dashboard</h1>
 
             {/* Stats Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div className="admin-stats-grid">
                 <Link to="/admin/users" style={{ textDecoration: 'none' }}>
                     <StatCard
                         title="Pending Users"

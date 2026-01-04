@@ -4,12 +4,12 @@ import Sidebar from './Sidebar';
 
 const Layout = ({ children, role }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
-            if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
+            setIsMobile(window.innerWidth < 1024);
+            if (window.innerWidth >= 1024) setIsMobileMenuOpen(false);
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);

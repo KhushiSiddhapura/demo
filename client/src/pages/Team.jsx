@@ -87,7 +87,7 @@ const Team = () => {
                 <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Team Directory</h1>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            <div className="team-grid">
                 {users.map(user => (
                     <div
                         key={user._id}
