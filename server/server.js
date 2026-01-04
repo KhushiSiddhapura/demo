@@ -4,7 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const mongoURI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 5000; // This defines the port
+
+// Connect to MongoDB
+mongoose.connect(mongoURI)
+  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+  .catch((err) => console.error("❌ Connection error:", err));
 
 // Middleware
 app.use(express.json());
