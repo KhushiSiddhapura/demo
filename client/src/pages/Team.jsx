@@ -63,18 +63,32 @@ const Team = () => {
 
     const handleAddUser = async (e) => {
         e.preventDefault();
-        // NOTE: We haven't implemented a dedicated "Create User" endpoint for Admins in this session yet.
-        // Usually this would hit /api/auth/register or a special admin route.
-        // For now, I'll assume we might want to alert or stub it.
-        // BUT, the user explicitly asked for this feature "add feature only to admin's dashboard" (or here).
-        // I'll implement a basic alert or try to use register route if it didn't require login context switch.
-        // Actually, let's use the register endpoint but we need to remove the token? No, standard register is public. 
-        // But logged in admin calling it? It might set the token for the ADMIN to the NEW user if not careful.
-        // Best practice: Admin specific create route.
+        const token = localStorage.getItem('token');
 
-        // Assuming we just want the UI flow for now as per previous steps.
-        alert("User creation logic would be hooked up here (e.g., POST /api/admin/users).");
-        setShowAddUserModal(false);
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(newUser)
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert('User added successfully! They are now in the "Pending Users" list waiting for approval.');
+                setShowAddUserModal(false);
+                setNewUser({ username: '', email: '', password: '', role: 'member' }); // Reset form
+                // Do NOT fetchUsers() here because the user is not approved yet, so they won't show up in the main list.
+            } else {
+                alert(data.message || 'Failed to add user');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('An error occurred. Please try again.');
+        }
     };
 
     const handleInputChange = (e) => {

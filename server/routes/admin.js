@@ -3,6 +3,49 @@ const router = express.Router();
 const User = require('../models/User');
 const Event = require('../models/Event');
 const { protect, admin } = require('../middleware/authMiddleware');
+const bcrypt = require('bcryptjs');
+
+// @route   POST api/admin/users
+// @desc    Create a new user (admin or member) - defaults to isApproved: false
+// @access  Private/Admin
+router.post('/users', protect, admin, async (req, res) => {
+    const { username, email, password, role } = req.body;
+
+    try {
+        const userExists = await User.findOne({ username });
+        if (userExists) return res.status(400).json({ message: 'Username already exists' });
+
+        const emailExists = await User.findOne({ email });
+        if (emailExists) return res.status(400).json({ message: 'Email already exists' });
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Always create as unapproved, even if admin created them
+        const user = await User.create({
+            username,
+            email,
+            password: hashedPassword,
+            role: role || 'member',
+            isApproved: false 
+        });
+
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                isApproved: user.isApproved,
+                message: 'User created successfully. They are pending approval.'
+            });
+        } else {
+            res.status(400).json({ message: 'Invalid user data' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 // @route   GET api/admin/users/pending
 // @desc    Get all pending users
