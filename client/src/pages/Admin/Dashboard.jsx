@@ -57,7 +57,7 @@ const AdminDashboard = () => {
             setPendingTasks(pendingTasksList);
 
             setStats({
-                totalUsers: usersData.length,
+                totalUsers: usersData.filter(u => u.isApproved).length,
                 pendingUsers: pendingUsersCount,
                 activeEvents: activeEventsCount,
                 pendingEvents: pendingEventsCount,
